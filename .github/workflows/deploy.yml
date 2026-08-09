@@ -10,14 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: read
-
+        contents: read
+        id-token: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+            workload_identity_provider: 'projects/1083821300508/locations/global/workloadIdentityPools/github-actions-pool/providers/github-provider'
+            service_account: 'composer@dauntless-loop-499615-j7.iam.gserviceaccount.com'
 
       - name: Terraform Init
         run: terraform -chdir=terraform init
