@@ -4,3 +4,9 @@ venv/
 .env
 *.pyc
 *.json
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
