@@ -16,8 +16,7 @@ PROJECT_ID = "dauntless-loop-499615-j7"
 REGION = "us-central1"
 CLUSTER_NAME = "customer-etl-cluster"
 
-PYSPARK_URI = "gs://us-central1-composer-demo-ca6a87ef-bucket/dags/scripts/pyspark_job.py"
-
+PYSPARK_URI = "gs://dauntless-loop-499615-j7-composer/dags/scripts/pyspark_job.py"
 
 default_args = {
     "owner": "airflow"
