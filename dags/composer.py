@@ -9,6 +9,8 @@ from datetime import datetime
 
 from scripts.extract import extract_api
 from scripts.load import load_bigquery
+from scripts.vertex_ai import run_vertex_ai
+
 
 PROJECT_ID = "dauntless-loop-499615-j7"
 REGION = "us-central1"
@@ -16,9 +18,11 @@ CLUSTER_NAME = "customer-etl-cluster"
 
 PYSPARK_URI = "gs://us-central1-composer-demo-ca6a87ef-bucket/dags/scripts/pyspark_job.py"
 
+
 default_args = {
     "owner": "airflow"
 }
+
 
 CLUSTER_CONFIG = {
     "gce_cluster_config": {
@@ -42,6 +46,7 @@ CLUSTER_CONFIG = {
     },
 }
 
+
 PYSPARK_JOB = {
     "reference": {
         "project_id": PROJECT_ID
@@ -53,6 +58,7 @@ PYSPARK_JOB = {
         "main_python_file_uri": PYSPARK_URI
     }
 }
+
 
 with DAG(
     dag_id="customer_etl",
@@ -87,6 +93,11 @@ with DAG(
         python_callable=load_bigquery,
     )
 
+    vertex_ai = PythonOperator(
+        task_id="vertex_ai",
+        python_callable=run_vertex_ai,
+    )
+
     delete_cluster = DataprocDeleteClusterOperator(
         task_id="delete_cluster",
         project_id=PROJECT_ID,
@@ -95,4 +106,4 @@ with DAG(
         trigger_rule="all_done",
     )
 
-    extract >> create_cluster >> run_pyspark >> load >> delete_cluster
+    extract >> create_cluster >> run_pyspark >> load >> vertex_ai >> delete_cluster

@@ -36,3 +36,12 @@ jobs:
 
       - name: Terraform Plan
         run: terraform -chdir=terraform plan -var-file=terraform.tfvars
+
+      - name: Terraform Apply
+        run: terraform -chdir=terraform apply -auto-approve -var-file=terraform.tfvars
+
+      - name: Upload PySpark Job to GCS
+        uses: google-github-actions/upload-cloud-storage@v2
+        with:
+          path: scripts/pyspark_job.py
+          destination: customer-etl-bucket/jobs
