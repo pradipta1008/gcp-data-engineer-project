@@ -47,7 +47,7 @@ CLUSTER_CONFIG = {
 
     "master_config": {
         "num_instances": 1,
-        "machine_type_uri": "e2-medium",
+        "machine_type_uri": "e2-small",
         "disk_config": {
             "boot_disk_type": "pd-standard",
             "boot_disk_size_gb": 30,
@@ -56,7 +56,7 @@ CLUSTER_CONFIG = {
 
     "worker_config": {
         "num_instances": 1,
-        "machine_type_uri": "e2-medium",
+        "machine_type_uri": "e2-small",
         "disk_config": {
             "boot_disk_type": "pd-standard",
             "boot_disk_size_gb": 30,
