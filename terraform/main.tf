@@ -10,12 +10,10 @@ resource "google_project_service" "composer_api" {
 # --------------------------------------------------
 
 resource "google_storage_bucket" "customer_bucket" {
-  name     = var.bucket_name
-  location = var.region
-
+  name                        = var.bucket_name
+  location                    = var.region
   uniform_bucket_level_access = true
-
-  storage_class = "STANDARD"
+  storage_class               = "STANDARD"
 }
 
 # --------------------------------------------------
@@ -32,11 +30,9 @@ resource "google_bigquery_dataset" "customer_dataset" {
 # --------------------------------------------------
 
 resource "google_storage_bucket" "composer_bucket" {
-  name     = var.composer_bucket_name
-  location = var.region
-
-  storage_class = "STANDARD"
-
+  name                        = var.composer_bucket_name
+  location                    = var.region
+  storage_class               = "STANDARD"
   uniform_bucket_level_access = true
 }
 

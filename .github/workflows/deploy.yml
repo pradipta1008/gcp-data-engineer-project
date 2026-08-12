@@ -10,42 +10,57 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-        contents: read
-        id-token: write
+      contents: read
+      id-token: write
+
     steps:
+      # ---------------------------------------------
+      # CHECKOUT
+      # ---------------------------------------------
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # ---------------------------------------------
+      # TERRAFORM
+      # ---------------------------------------------
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
+      # ---------------------------------------------
+      # GOOGLE CLOUD AUTHENTICATION
+      # ---------------------------------------------
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
-            workload_identity_provider: 'projects/1083821300508/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-provider'  
-            service_account: 'composer@dauntless-loop-499615-j7.iam.gserviceaccount.com'
+          workload_identity_provider: "projects/1083821300508/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-provider"
+          service_account: "composer@dauntless-loop-499615-j7.iam.gserviceaccount.com"
 
+      # ---------------------------------------------
+      # TERRAFORM INIT
+      # ---------------------------------------------
       - name: Terraform Init
         run: terraform -chdir=terraform init
 
+      # ---------------------------------------------
+      # TERRAFORM FORMAT CHECK
+      # ---------------------------------------------
       - name: Terraform Format Check
         run: terraform -chdir=terraform fmt -check
 
+      # ---------------------------------------------
+      # TERRAFORM VALIDATE
+      # ---------------------------------------------
       - name: Terraform Validate
         run: terraform -chdir=terraform validate
 
-      - name: Terraform Destroy Composer Environment
-        run: terraform -chdir=terraform destroy -auto-approve -target=google_composer_environment.customer_composer -var-file=terraform.tfvars
-        continue-on-error: true
-
+      # ---------------------------------------------
+      # TERRAFORM PLAN
+      # ---------------------------------------------
       - name: Terraform Plan
         run: terraform -chdir=terraform plan -var-file=terraform.tfvars -out=tfplan
 
+      # ---------------------------------------------
+      # TERRAFORM APPLY
+      # ---------------------------------------------
       - name: Terraform Apply
         run: terraform -chdir=terraform apply -auto-approve tfplan
-
-      - name: Upload PySpark Job to GCS
-        uses: google-github-actions/upload-cloud-storage@v2
-        with:
-          path: scripts/pyspark_job.py
-          destination: customer-etl-bucket/jobs
