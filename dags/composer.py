@@ -91,7 +91,7 @@ PYSPARK_JOB = {
 with DAG(
     dag_id="customer_etl",
     start_date=datetime(2024, 1, 1),
-    schedule=None,
+    schedule="@once",
     catchup=False,
     default_args=default_args,
     tags=["customer", "etl", "gcp"],
