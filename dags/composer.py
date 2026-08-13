@@ -55,7 +55,7 @@ CLUSTER_CONFIG = {
     },
 
     "worker_config": {
-        "num_instances": 1,
+        "num_instances": 2,
         "machine_type_uri": "e2-small",
         "disk_config": {
             "boot_disk_type": "pd-standard",

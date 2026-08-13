@@ -61,24 +61,12 @@ resource "google_composer_environment" "customer_composer" {
   }
 
   config {
-    environment_size = "ENVIRONMENT_SIZE_SMALL"
-
     software_config {
       image_version = "composer-3-airflow-2.11.1-build.11"
     }
 
     node_config {
       service_account = var.composer_service_account
-    }
-
-    workloads_config {
-      worker {
-        cpu        = 0.5
-        memory_gb  = 2
-        storage_gb = 10
-        min_count  = 2
-        max_count  = 2
-      }
     }
   }
 
