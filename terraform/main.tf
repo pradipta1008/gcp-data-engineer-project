@@ -68,6 +68,16 @@ resource "google_composer_environment" "customer_composer" {
     node_config {
       service_account = var.composer_service_account
     }
+
+    workloads_config {
+      worker {
+        min_count  = 2
+        max_count  = 2
+        cpu        = 0.5
+        memory_gb  = 2
+        storage_gb = 10
+      }
+    }
   }
 
   depends_on = [
